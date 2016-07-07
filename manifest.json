@@ -1,0 +1,14 @@
+{
+  "name" : "Lobby Indi",
+  "short_description" : "Make your Lobby app a website",
+  "category" : "development",
+  "sub_category" : "web",
+  "version" : "0.1",
+  "require" : {
+    "app/admin" : ">=0.1"
+  },
+  "logo" : "true",
+  "author" : "Lobby",
+  "author_page" : "https://lobby.subinsb.com",
+  "app_page" : "https://subinsb.com/lobby/app-indi"
+}
