@@ -1,6 +1,7 @@
 <?php
 namespace Lobby\Module;
 
+use Assets;
 use Hooks;
 use Lobby\Apps;
 use Response;
@@ -27,11 +28,15 @@ class app_indi extends \Lobby\Module {
         $appID = Apps::getInfo("id");
         $page = $request->page === null ? "/" : "/{$request->page}";
         
-        if(substr($page, 0, 6) == "/admin"){
+        if(substr($page, 0, 6) === "/admin"){
           return false;
         }else{
-          $App = new \Lobby\Apps($appID);
+          /**
+           * Remove CSS
+           */
+          Assets::removeCSS("theme.hine-/src/dashboard/css/dashboard.css");
           
+          $App = new \Lobby\Apps($appID);
           $class = $App->getInstance();
     
           /**
