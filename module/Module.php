@@ -3,9 +3,10 @@ namespace Lobby\Module;
 
 use Assets;
 use Hooks;
+use Lobby;
 use Lobby\Apps;
-use Response;
 use Lobby\Router;
+use Response;
 
 class app_indi extends \Lobby\Module {
 
@@ -16,6 +17,15 @@ class app_indi extends \Lobby\Module {
     
     if($appID === null)
       return null;
+    
+    /**
+     * Change app's URL, also add new admin URL
+     */
+    Hooks::addFilter("app.manifest", function($info){
+      $info["url"] = Lobby::getURL();
+      $info["adminURL"] = L_URL . "/admin/app/" . $info["id"];
+      return $info;
+    });
     
     $App = new Apps($appID);
     $App->run();
@@ -53,11 +63,11 @@ class app_indi extends \Lobby\Module {
             if($html){
               Response::setPage($html);
             }else{
-              ser();
+              return false;
             }
           }else{
             if($pageResponse === null){
-              ser();
+              return false;
             }else{
               Response::setPage($pageResponse);
             }
@@ -67,9 +77,9 @@ class app_indi extends \Lobby\Module {
     });
     
     Router::route("/app/[:appID]?/[**:page]?", function($request){
-      if($request->appID === "admin")
-        Response::redirect("admin/app/admin/$page" . $request->page);
-      ser();
+      if($request->appID === "admin" || $request->appID === "indi")
+        Response::redirect("admin/app/{$request->appID}/{$request->page}");
+      Response::showError();
     });
     
     /**
@@ -79,7 +89,7 @@ class app_indi extends \Lobby\Module {
       \Lobby\Modules::disableModule("filepicker");
     }
     Router::route("/includes/lib/modules?/[**:page]?", function($request){
-      ser();
+      Response::showError();
     });
     
     \Lobby\UI\Panel::addTopItem('indiModule', array(
@@ -106,18 +116,13 @@ class app_indi extends \Lobby\Module {
       
       $App = new \Lobby\Apps($appID);
       if(!$App->exists){
-        ser();
+        Response::showError();
         return null;
       }
       
       Hooks::addFilter("admin.view.sidebar", function($links) use ($appID, $App){
         $links["/admin/app/$appID"] = $App->info["name"];
         return $links;
-      });
-      
-      Hooks::addFilter("app.manifest", function($info){
-        $info["adminURL"] = L_URL . "/admin/app/" . $info["id"];
-        return $info;
       });
       
       $class = $App->getInstance();
@@ -135,7 +140,7 @@ class app_indi extends \Lobby\Module {
         if($html){
           Response::setPage($html);
         }else{
-          ser();
+          Response::showError();
         }
       }else{
         if($pageResponse === null){
