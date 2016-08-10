@@ -3,7 +3,7 @@
   "short_description" : "Make your Lobby app a website",
   "category" : "development",
   "sub_category" : "web",
-  "version" : "0.1.1",
+  "version" : "0.2",
   "require" : {
     "app/admin" : ">=0.2"
   },
