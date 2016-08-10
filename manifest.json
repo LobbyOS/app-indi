@@ -5,7 +5,7 @@
   "sub_category" : "web",
   "version" : "0.1.1",
   "require" : {
-    "app/admin" : ">=0.1"
+    "app/admin" : ">=0.2"
   },
   "logo" : "true",
   "author" : "Lobby",
