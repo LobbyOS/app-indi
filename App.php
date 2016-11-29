@@ -6,5 +6,5 @@ class indi extends \Lobby\App {
   public function page($page){
     return "auto";
   }
-  
+
 }
